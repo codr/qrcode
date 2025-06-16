@@ -1,5 +1,5 @@
-import { Encoding } from './encoder/encoder';
-import { ErrorCorrectionLevel } from "./error_correction/levels";
+import { Encoding } from '../encoder/encoder';
+import { ErrorCorrectionLevel } from '../error_correction/levels';
 
 /**
  * QRCode class represents a QR code as a 2D array of numbers.
@@ -40,15 +40,22 @@ export class QRCode {
   protected extractVersion(): string {
     const width = this.squares[0].length;
     if (width !== this.squares.length) {
-      throw new Error('Invalid QR code squares: QR code must be a square matrix, but was ' + width + 'x' + this.squares.length);
+      throw new Error(
+        'Invalid QR code squares: QR code must be a square matrix, but was ' +
+          width +
+          'x' +
+          this.squares.length,
+      );
     }
 
-    const version = (width - (8 * 2) - 1) / 4;
-    if (version >= 1 && version <= 40 || version % 1 === 0) {
+    const version = (width - 8 * 2 - 1) / 4;
+    if ((version >= 1 && version <= 40) || version % 1 === 0) {
       return `${version}`;
     }
 
-    throw new Error(`Invalid QR code version. QR width is ${width}, with does not match a known size.`);
+    throw new Error(
+      `Invalid QR code version. QR width is ${width}, with does not match a known size.`,
+    );
   }
 
   // gets encoding of the QR code
@@ -71,7 +78,9 @@ export class QRCode {
     if (highBit === 0 && lowBit === 0) {
       return ErrorCorrectionLevel.H;
     }
-    throw new Error('Invalid error correction level bits: ' + highBit + ', ' + lowBit);
+    throw new Error(
+      'Invalid error correction level bits: ' + highBit + ', ' + lowBit,
+    );
   }
 
   getMaskPattern(): number {
@@ -93,13 +102,18 @@ export class QRCode {
   }
 
   private extractEncoding(): Encoding {
-    const firstByte = this.squares[this.squares.length - 1][this.squares[0].length - 1];
-    const secondByte = this.squares[this.squares.length - 1][this.squares[0].length - 2];
-    const thirdByte = this.squares[this.squares.length - 2][this.squares[0].length - 1];
-    const fourthByte = this.squares[this.squares.length - 2][this.squares[0].length - 2];
+    const firstByte =
+      this.squares[this.squares.length - 1][this.squares[0].length - 1];
+    const secondByte =
+      this.squares[this.squares.length - 1][this.squares[0].length - 2];
+    const thirdByte =
+      this.squares[this.squares.length - 2][this.squares[0].length - 1];
+    const fourthByte =
+      this.squares[this.squares.length - 2][this.squares[0].length - 2];
 
     // bitwise OR to get the encoding type
-    const encodingBits = (firstByte << 3) | (secondByte << 2) | (thirdByte << 1) | fourthByte;
+    const encodingBits =
+      (firstByte << 3) | (secondByte << 2) | (thirdByte << 1) | fourthByte;
     if (encodingBits === 0b0001) {
       return Encoding.Numeric;
     }
@@ -118,7 +132,7 @@ export class QRCode {
 
   toConsole(): string {
     return this.squares
-      .map(row => row.map(value => (value === 1 ? '██' : '  ')).join(''))
+      .map((row) => row.map((value) => (value === 1 ? '██' : '  ')).join(''))
       .join('\n');
   }
 }

@@ -1,10 +1,15 @@
 import fs from 'fs';
 import path from 'path';
 
-import { createFromArray } from "./qrcode_factory";
+import { createFromArray } from './symbol/symbol_factory';
 
 const v1Example0 = path.join(__dirname, '..', 'data', 'v1_example_0.csv');
-const m3MicroExample0 = path.join(__dirname, '..', 'data', 'm3_micro_example_0.csv');
+const m3MicroExample0 = path.join(
+  __dirname,
+  '..',
+  'data',
+  'm3_micro_example_0.csv',
+);
 
 function printExample(error: NodeJS.ErrnoException | null, data: string): void {
   if (error) {
@@ -13,7 +18,12 @@ function printExample(error: NodeJS.ErrnoException | null, data: string): void {
   }
 
   // Process the file content as a CSV into a 2D array
-  const lines = data.split('\n').map(line => line.split(',').map(value => value.trim()).map(value => Number(value)));
+  const lines = data.split('\n').map((line) =>
+    line
+      .split(',')
+      .map((value) => value.trim())
+      .map((value) => Number(value)),
+  );
 
   // Create a QRCode instance with the 2D array
   const qrCode = createFromArray(lines);

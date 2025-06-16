@@ -1,6 +1,5 @@
-
-import { QRCode } from "./qrcode";
-import { ErrorCorrectionLevel } from "./error_correction/levels";
+import { QRCode } from './qrcode';
+import { ErrorCorrectionLevel } from '../error_correction/levels';
 
 export class MicroQRCode extends QRCode {
   static fromArray(array: number[][]): MicroQRCode {
@@ -18,6 +17,8 @@ export class MicroQRCode extends QRCode {
     if (microVersion >= 1 && microVersion <= 4) {
       return `M${microVersion}`;
     }
-    throw new Error(`Invalid QR code version. QR width is ${width}, with does not match a known size.`);
+    throw new Error(
+      `Invalid QR code version. QR width is ${width}, with does not match a known size.`,
+    );
   }
 }
