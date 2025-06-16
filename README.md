@@ -45,6 +45,5 @@ Goal: QR code that when read allows the user to generate another QR code.
 ## Notes
 
 - [Veritasium video](https://youtu.be/w5ebcowAJD8)
-
 - Consider apply gzip to the data-url
 - Test if a mobile phone will open a data URL from a QR code

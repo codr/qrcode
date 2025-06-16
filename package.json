@@ -5,7 +5,6 @@
   "license": "ISC",
   "author": "codr",
   "type": "commonjs",
-  "main": "index.js",
   "scripts": {
     "build": "tsc",
     "start": "node --enable-source-maps dist/index.js",
