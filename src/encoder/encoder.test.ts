@@ -53,10 +53,10 @@ describe('Encoder', () => {
    *
    * Version 1L has data capacity of 26 bytes.
    *  - 19 bytes for data.
-   *   - 1.5 bytes for mode and message length.
-   *   - 7 bytes for the message itself.
-   *   - 0.5 bytes for zero padding.
-   *   - 10 bytes for padding.
+   *    - 1.5 bytes for mode and message length.
+   *    - 7 bytes for the message itself.
+   *    - 0.5 bytes for zero padding.
+   *    - 10 bytes for padding.
    *  - 7 bytes for error correction codewords.
    */
   it('returns expected result for encoding "codr.io"', () => {
@@ -110,9 +110,9 @@ describe('Encoder', () => {
    *
    * Version 1L has data capacity of 26 bytes.
    *  - 19 bytes for data.
-   *   - 1.5 bytes for mode and message length.
-   *   - 17 bytes for the message itself.
-   *   - 0.5 bytes for zero padding.
+   *    - 1.5 bytes for mode and message length.
+   *    - 17 bytes for the message itself.
+   *    - 0.5 bytes for zero padding.
    *  - 7 bytes for error correction codewords.
    */
   it('returns expected result for encoding "Hello, QR example"', () => {
