@@ -150,5 +150,5 @@ export function encodeReedSolomon(
   const gen = generateGeneratorPoly(numberOfSymbols);
   const padded = [...message, ...new Array(numberOfSymbols).fill(0)];
   const { remainder } = polyDiv(padded, gen);
-  return [...message, ...remainder];
+  return remainder;
 }

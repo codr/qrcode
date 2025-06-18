@@ -12,7 +12,7 @@ describe('encodeReedSolomon', () => {
     const output = encodeReedSolomon(data, parity);
 
     // Assert
-    expect(output.length).toBe(10);
+    expect(output.length).toBe(5);
   });
 
   it('should return all zeros for empty data', () => {
@@ -36,7 +36,7 @@ describe('encodeReedSolomon', () => {
     const output = encodeReedSolomon(data, parity);
 
     // Assert
-    expect(output).toEqual([0, 0, 0, 0, 0, 0, 0]);
+    expect(output).toEqual([0, 0, 0]);
   });
 
   it('should produce consistent results for the same input', () => {
@@ -56,17 +56,17 @@ describe('encodeReedSolomon', () => {
     {
       data: [1, 2, 3],
       parity: 2,
-      expected: [1, 2, 3, 140, 255],
+      expected: [140, 255],
     },
     {
       data: [32, 91, 11, 120],
       parity: 3,
-      expected: [32, 91, 11, 120, 98, 200, 10],
+      expected: [98, 200, 10],
     },
     {
       data: [99, 111, 100, 114, 46, 105, 111],
       parity: 5,
-      expected: [99, 111, 100, 114, 46, 105, 111, 237, 117, 86, 118, 242],
+      expected: [237, 117, 86, 118, 242],
     },
   ];
 
