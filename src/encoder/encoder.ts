@@ -1,5 +1,6 @@
 import { ErrorCorrectionLevel } from '../error_correction/levels';
 import { encodeReedSolomon } from '../error_correction/reed_solomon_encoder';
+import { BitData } from '../util/bit_data';
 
 export enum Encoding {
   Unknown = 'Unknown',
@@ -8,6 +9,9 @@ export enum Encoding {
   Byte = 'Byte',
   Kanji = 'Kanji',
 }
+
+const MESSAGE_PADDING_ODD = 0b11101100;
+const MESSAGE_PADDING_EVEN = 0b00010001;
 
 /**
  * Encoder class for generating QR codes from raw payloads.
@@ -33,19 +37,40 @@ export class Encoder {
     );
 
     // 3. Determine the number of error correction codewords needed.
-    const errorCorrectionCodewords = this.calculateErrorCorrectionSize(version);
+    const errorCorrectionSize = this.calculateErrorCorrectionSize(version);
 
     // 4. Create the data codewords.
-    let data = 0b0100; // Default to Byte encoding
-    const dataCodewords = this.createDataCodewords(
-      this.rawPayload,
-      encoding,
-      version,
-      errorCorrectionCodewords,
-    );
+    let encodingBits = 0b0100; // Default to Byte encoding
+    let max = 26; // 26 bytes in version 1. See Table 1 on page 19.
+    let view = new BitData(max);
+    view.appendUint4(encodingBits); // Set the first byte with the encoding type
+    view.appendUint4(this.rawPayload.length >> 4); // Set the second byte to 0 (version 1)
+    view.appendUint4(this.rawPayload.length & 0x0f); // Set the third byte to the length of the payload
+    view.appendString(this.rawPayload); // Append the raw payload as a string
+    view.shiftToByteAligned();
+    this.fillWithPadding(view, version);
 
-    // Draw the rest of the owl.
-    return new Uint8Array();
+    // Fill remaining bits with padding.
+    this.fillWithPadding(view, version);
+
+    const dataCodewords = this.createDataCodewords(view, errorCorrectionSize);
+    view.appendUint8Array(new Uint8Array(dataCodewords)); // Append the data codewords
+
+    // 5. Return the final byte array.
+    return view.getUint8Array();
+  }
+
+  private fillWithPadding(view: BitData, version: number | string): void {
+    const totalSize = 19; // Version 1L has 19 bytes of data capacity. See Table 7 on page 33.
+    const bytesToFill = totalSize - view.getTotalBytes();
+
+    for (let i = 0; i < bytesToFill; i++) {
+      if (view.getTotalBytes() % 2 === 0) {
+        view.appendUint8(MESSAGE_PADDING_EVEN);
+      } else {
+        view.appendUint8(MESSAGE_PADDING_ODD);
+      }
+    }
   }
 
   private determineEncoding(payload: string): Encoding {
@@ -74,17 +99,15 @@ export class Encoder {
   private calculateErrorCorrectionSize(size: number | string): number {
     // TODO(codr): Implement logic to calculate the number of error correction codewords needed.
     // This will depend on the error correction level and the size of the QR code.
-    return 7; // Placeholder for now.
+    return 7; // Placeholder for now. For 1L, see Table 9 on page 38.
   }
 
   private createDataCodewords(
-    data: string,
-    encoding: Encoding,
-    version: number | string,
-    errorCorrectionCodewords: number,
+    data: BitData,
+    errorCorrectionSize: number,
   ): number[] {
-    const message = data.split('').map((char) => char.charCodeAt(0));
-    return encodeReedSolomon(message, errorCorrectionCodewords);
+    const message = Array.from(data.getUint8Array());
+    return encodeReedSolomon(message, errorCorrectionSize);
   }
 }
 
@@ -98,7 +121,7 @@ function minimumVersionForByteEncodingWithLowErrorCorrection(
 ): number | string {
   // TODO(codr): add proper size calculation based on payload length.
   //             See Table 7 on page 33.
-  if (payloadLength < 17) return 1;
+  if (payloadLength <= 17) return 1;
 
   // TODO(codr): add more error correction levels.
 
@@ -108,3 +131,9 @@ function minimumVersionForByteEncodingWithLowErrorCorrection(
     );
   throw new Error(`Payload not yet implemented: ${payloadLength}`);
 }
+
+// Only for testing purposes, to expose constants.
+export const TESTING_ONLY = {
+  MESSAGE_PADDING_ODD,
+  MESSAGE_PADDING_EVEN,
+};

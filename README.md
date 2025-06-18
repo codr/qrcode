@@ -21,6 +21,13 @@
   ██      ██
   ██████████
   ```
+- Final Message - The mode, message size, the message itself, any padding, and error correction
+- Data - The input data provided by the user
+- Error correction - Reed Solomon error correction codewords.
+
+An example message looks like:
+|--------------------------Final Message-------------------------|
+|--Mode--|--Data Size--|--Data--|--Padding--|--Error correction--|
 
 ## High-level Game Plan
 

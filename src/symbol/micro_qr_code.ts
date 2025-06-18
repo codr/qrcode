@@ -1,4 +1,4 @@
-import { QRCode } from './qrcode';
+import { QRCode } from './qr_code';
 import { ErrorCorrectionLevel } from '../error_correction/levels';
 
 export class MicroQRCode extends QRCode {
