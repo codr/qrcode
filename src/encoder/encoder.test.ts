@@ -49,9 +49,9 @@ describe('Encoder', () => {
   });
 
   /**
-   * Version 1L encoding for "codr.io" will produce this expected byte sequence.
+   * Version 1-L encoding for "codr.io" will produce this expected byte sequence.
    *
-   * Version 1L has data capacity of 26 bytes.
+   * Version 1-L has data capacity of 26 bytes.
    *  - 19 bytes for data.
    *    - 1.5 bytes for mode and message length.
    *    - 7 bytes for the message itself.
@@ -106,9 +106,9 @@ describe('Encoder', () => {
   });
 
   /**
-   * Version 1L encoding for "Hello, QR example" will produce this expected byte sequence.
+   * Version 1-L encoding for "Hello, QR example" will produce this expected byte sequence.
    *
-   * Version 1L has data capacity of 26 bytes.
+   * Version 1-L has data capacity of 26 bytes.
    *  - 19 bytes for data.
    *    - 1.5 bytes for mode and message length.
    *    - 17 bytes for the message itself.

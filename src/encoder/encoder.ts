@@ -61,7 +61,7 @@ export class Encoder {
   }
 
   private fillWithPadding(view: BitData, version: number | string): void {
-    const totalSize = 19; // Version 1L has 19 bytes of data capacity. See Table 7 on page 33.
+    const totalSize = 19; // Version 1-L has 19 bytes of data capacity. See Table 7 on page 33.
     const bytesToFill = totalSize - view.getTotalBytes();
 
     for (let i = 0; i < bytesToFill; i++) {
