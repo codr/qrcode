@@ -35,7 +35,6 @@ function printExample(error: NodeJS.ErrnoException | null, data: string): void {
   console.log('Error Correction Level:', qrCode.getErrorCorrectionLevel());
   console.log('Version:', qrCode.getVersion());
   console.log('Mask Pattern:', qrCode.getMaskPattern());
-  // console.log('Encoding:', qrCode.getEncoding());
 }
 
 // fs.readFile(v1Example0, 'utf8', printExample);
