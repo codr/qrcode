@@ -1,15 +1,9 @@
+/// <reference types="vitest" />
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    browser: {
-      provider: 'playwright',
-      enabled: true,
-      instances: [
-        {
-          browser: 'chromium',
-        },
-      ],
-    },
+    environment: 'happy-dom',
+    setupFiles: ['./test/setup.ts'],
   },
 });
