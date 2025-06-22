@@ -22,17 +22,21 @@ const MESSAGE_PADDING_EVEN = 0b00010001;
  * 3. Add
  */
 export class Encoder {
-  private correctionLevel = ErrorCorrectionLevel.L; // Default to low error correction level
+  readonly encoding: Encoding;
 
-  constructor(private rawPayload: string) {}
+  constructor(
+    private rawPayload: string,
+    private errorCorrectionLevel = ErrorCorrectionLevel.L,
+    encoding?: Encoding,
+  ) {
+    // 1. Determine the encoding type based on the payload.
+    this.encoding = encoding || this.determineEncoding(rawPayload);
+  }
 
   encodeMessage(): Uint8Array {
-    // 1. Determine the encoding type based on the payload.
-    const encoding = this.determineEncoding(this.rawPayload);
-
     // 2. Calculate the minimum version for the encoding.
     const version = this.calculateMinimumVersion(
-      encoding,
+      this.encoding,
       this.rawPayload.length,
     );
 
