@@ -7,7 +7,6 @@ import { getAlignmentPatternPositions } from './alignment_pattern';
  */
 export function scanner(size: number): Generator<[number, number], void, void> {
   const version = Math.floor((size - 17) / 4);
-  debugger;
   if ((size - 1) % 4)
     throw new Error(
       `Invalid QR code size: ${size}. Size must be 4n + 1, where n is a positive integer.`,
