@@ -88,13 +88,12 @@ export class QRCode {
   }
 
   protected extractMaskPattern(): number {
-    // TODO handle micro QR codes
-    if (this.version.startsWith('M')) return -1;
     const highBit = this.squares[8][2];
     const middleBit = this.squares[8][3];
     const lowBit = this.squares[8][4];
     // shift the bits to get the mask pattern
-    return (highBit << 2) | (middleBit << 1) | lowBit;
+    const maskedPattern = (highBit << 2) | (middleBit << 1) | lowBit;
+    return maskedPattern ^ 0b101;
   }
 
   getEncoding(): Encoding {

@@ -21,4 +21,10 @@ export class MicroQRCode extends QRCode {
       `Invalid QR code version. QR width is ${width}, with does not match a known size.`,
     );
   }
+
+  protected extractMaskPattern(): number {
+    throw new Error(
+      'Micro QR Codes do not use mask patterns like standard QR Codes.',
+    );
+  }
 }
