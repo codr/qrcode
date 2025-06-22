@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { createFromArray } from './symbol/symbol_factory';
+import { generateQR } from './generate';
 
 const v1Example0 = path.join(__dirname, '..', 'data', 'v1_example_0.csv');
 const m3MicroExample0 = path.join(
@@ -38,4 +39,7 @@ function printExample(error: NodeJS.ErrnoException | null, data: string): void {
 }
 
 // fs.readFile(v1Example0, 'utf8', printExample);
-fs.readFile(m3MicroExample0, 'utf8', printExample);
+// fs.readFile(m3MicroExample0, 'utf8', printExample);
+
+const helloWorld = generateQR('example.com');
+console.log(helloWorld.toConsole());
