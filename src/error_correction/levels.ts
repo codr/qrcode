@@ -1,8 +1,8 @@
 export enum ErrorCorrectionLevel {
-  L = 'L', // Low
-  M = 'M', // Medium
-  Q = 'Q', // Quartile
-  H = 'H', // High
+  L = 'Low',
+  M = 'Medium',
+  Q = 'Quartile',
+  H = 'High',
 }
 
 export function getErrorCorrectionLevelBits(
