@@ -1,6 +1,6 @@
 type MaskFunction = (x: number, y: number) => boolean;
 
-type MaskPattern = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
+export type MaskPattern = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 export function getMaskPattern(maskPattern: MaskPattern): MaskFunction {
   switch (maskPattern) {
@@ -13,15 +13,13 @@ export function getMaskPattern(maskPattern: MaskPattern): MaskFunction {
     case 0b011:
       return (x, y) => (x + y) % 3 === 0;
     case 0b100:
-      return (x, y) => Math.floor(y / 2) + (Math.floor(x / 3) % 2) === 0;
+      return (x, y) => (Math.floor(y / 2) + Math.floor(x / 3)) % 2 === 0;
     case 0b101:
-      return (x, y) => (((x * y) % 2) + ((x * y) % 3)) % 2 === 0;
+      return (x, y) => ((y * x) % 2) + ((y * x) % 3) === 0;
     case 0b110:
-      return (x, y) => (((x * y) % 3) + ((x + y) % 2)) % 2 === 0;
+      return (x, y) => (((x * y) % 2) + ((x * y) % 3)) % 2 === 0;
     case 0b111:
-      return (x, y) =>
-        (((Math.floor(y / 2) + Math.floor(x / 3)) % 2) + ((x * y) % 3)) % 2 ===
-        0;
+      return (x, y) => (((x * y) % 3) + ((x + y) % 2)) % 2 === 0;
     default:
       throw new Error('Invalid mask pattern: ' + maskPattern);
   }
