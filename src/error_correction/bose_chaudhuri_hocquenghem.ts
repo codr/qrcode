@@ -34,10 +34,6 @@ export function generateBCHCodeword(
  * Performs polynomial division over GF(2) (binary field).
  * Returns the remainder after dividing dividend by divisor.
  *
- * @param {number[]} dividend - The dividend polynomial coefficients (in descending order).
- * @param {number[]} divisor - The divisor polynomial coefficients (in descending order).
- * @returns {number[]} The remainder polynomial coefficients (length = divisor.length - 1).
- *
  * @example
  * // Dividing [1,0,1,1,0,0,0] by [1,0,1,1]
  * // Returns [0,1,0]
