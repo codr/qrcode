@@ -52,7 +52,6 @@ export class Encoder {
     view.appendUint4(this.rawPayload.length & 0x0f); // Set the third byte to the length of the payload
     view.appendString(this.rawPayload); // Append the raw payload as a string
     view.shiftToByteAligned();
-    this.fillWithPadding(view, version);
 
     // Fill remaining bits with padding.
     this.fillWithPadding(view, version);
