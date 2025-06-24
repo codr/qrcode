@@ -1,5 +1,6 @@
 import { Encoding } from '../encoder/encoder';
 import { ErrorCorrectionLevel } from '../error_correction/levels';
+import { MaskPattern } from './masks';
 
 /**
  * QRCode class represents a QR code as a 2D array of numbers.
@@ -9,7 +10,7 @@ export class QRCode {
   protected squares: number[][];
   private errorCorrectionLevel: ErrorCorrectionLevel;
   private version: string;
-  private maskPattern: number;
+  private maskPattern: MaskPattern;
   private encoding: Encoding;
 
   constructor(squares: number[][]) {
@@ -87,13 +88,14 @@ export class QRCode {
     return this.maskPattern;
   }
 
-  protected extractMaskPattern(): number {
+  protected extractMaskPattern(): MaskPattern {
     const highBit = this.squares[8][2];
     const middleBit = this.squares[8][3];
     const lowBit = this.squares[8][4];
     // shift the bits to get the mask pattern
     const maskedPattern = (highBit << 2) | (middleBit << 1) | lowBit;
-    return maskedPattern ^ 0b101;
+    // remove mask before returning
+    return (maskedPattern ^ 0b101) as MaskPattern;
   }
 
   getEncoding(): Encoding {

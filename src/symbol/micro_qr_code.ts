@@ -1,5 +1,6 @@
 import { QRCode } from './qr_code';
 import { ErrorCorrectionLevel } from '../error_correction/levels';
+import { MaskPattern } from './masks';
 
 export class MicroQRCode extends QRCode {
   static fromArray(array: number[][]): MicroQRCode {
@@ -22,7 +23,7 @@ export class MicroQRCode extends QRCode {
     );
   }
 
-  protected extractMaskPattern(): number {
+  protected extractMaskPattern(): MaskPattern {
     throw new Error(
       'Micro QR Codes do not use mask patterns like standard QR Codes.',
     );
