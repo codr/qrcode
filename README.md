@@ -38,16 +38,49 @@ An example message looks like:
 
 Goal: QR code that when read allows the user to generate another QR code.
 
-### TODO
-
-[ ] Build basic encoding. Low level of error correction, basic masking.
-[ ] Build other levels of error correction
-[ ] Build other masks
-
 ### Milestones
 
-1. Build a generator
-2. Build a reader
+#### **Phase 1: Complete Core Implementation**
+
+- [ ] **Finish Reed-Solomon error correction** - Complete the current implementation you're working on
+- [ ] **Test basic QR generation** - Verify codes scan correctly with different data inputs
+- [ ] **Implement different error correction levels** - L, M, Q, H levels for size vs reliability trade-offs
+- [ ] **Add version support** - Handle different QR code sizes (Version 1-40) as needed
+
+#### **Phase 2: Optimization & Compression**
+
+- [ ] **Measure current bundle size** - Baseline your current implementation size
+- [ ] **Minify and optimize code** - Remove comments, shorten variable names, optimize algorithms
+- [ ] **Remove unnecessary features** - Strip down to only essential QR generation functions
+- [ ] **Optimize Reed-Solomon tables** - Consider pre-computed vs generated tables for size
+- [ ] **Test alternative compression** - Try different approaches to hit the ~3kb target
+
+#### **Phase 3: Self-Containment Testing**
+
+- [ ] **Create QR-in-QR proof of concept** - Generate a QR code containing your generator
+- [ ] **Test extraction and execution** - Verify the embedded code can be extracted and run
+- [ ] **Browser compatibility testing** - Ensure it works across different environments
+- [ ] **Error handling** - Add robust error handling for edge cases
+
+#### **Phase 4: Polish & Documentation**
+
+- [ ] **Create demo interface** - Simple web interface to showcase the generator
+- [ ] **Add usage examples** - Show different ways to use the self-contained generator
+- [ ] **Performance benchmarking** - Compare speed/size with other QR libraries
+- [ ] **Write project documentation** - Explain the concept and implementation approach
+
+#### **Phase 5: Share & Iterate**
+
+- [ ] **Deploy demo online** - Host somewhere for others to try
+- [ ] **Create project writeup** - Blog post or README explaining the technical challenge
+- [ ] **Gather feedback** - Share with developer communities for input
+- [ ] **Consider enhancements** - Based on feedback, plan potential improvements
+
+---
+
+**Current Focus:** Reed-Solomon implementation  
+**Next Up:** Core functionality testing  
+**Target:** Self-contained QR generator ≤ 3kb
 
 ## Notes
 
