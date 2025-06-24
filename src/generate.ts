@@ -2,7 +2,7 @@ import { Encoder } from './encoder/encoder';
 import { QRCode } from './symbol/qr_code';
 import { createFromArray } from './symbol/symbol_factory';
 import { scanner } from './symbol/scanner';
-import { formattingMask, getMaskPattern } from './symbol/masks';
+import { formattingMask, getMaskPattern, MaskPattern } from './symbol/masks';
 import { applyFinderPattern } from './symbol/finder_pattern';
 import {
   ErrorCorrectionLevel,
@@ -13,9 +13,11 @@ import { generateBCHCodeword } from './error_correction/bose_chaudhuri_hocquengh
 /**
  * Generates a QR code from the given message.
  */
-export function generateQR(message: string): QRCode {
-  const errorCorrectionLevel = ErrorCorrectionLevel.L; // Default error correction level
-
+export function generateQR(
+  message: string,
+  errorCorrectionLevel = ErrorCorrectionLevel.L,
+  maskPattern: MaskPattern = 7,
+): QRCode {
   // Step 1. Data Analysis
   // Step 2. Data Encoding
   // Step 3. Error Correction Encoding
@@ -27,7 +29,6 @@ export function generateQR(message: string): QRCode {
   const matrix = placeInMatrix(encodedMessage);
 
   // Step 6. Data Masking
-  const maskPattern = 1; // For simplicity, using mask pattern 1
   applyMask(matrix, maskPattern);
 
   // Step 7. Format Information
@@ -75,10 +76,7 @@ function placeInMatrix(message: Uint8Array, version = 1): number[][] {
   return matrix;
 }
 
-function applyMask(
-  matrix: number[][],
-  maskPattern: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7,
-): void {
+function applyMask(matrix: number[][], maskPattern: MaskPattern): void {
   const maskFunction = getMaskPattern(maskPattern);
   for (const [x, y] of scanner(matrix.length)) {
     if (maskFunction(x, y)) {
@@ -129,7 +127,7 @@ function applyFormatInformation(
     if (i < 6) {
       matrix[8][i] = bit;
     } else if (i === 6) {
-      matrix[8][i - 1] = bit;
+      matrix[8][i + 1] = bit;
     } else {
       matrix[8][matrix.length - 15 + i] = bit;
     }
