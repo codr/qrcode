@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 
-import { Encoder, TESTING_ONLY } from './encoder';
+import { Encoder, TEST_ONLY } from './encoder';
 
-const { MESSAGE_PADDING_EVEN, MESSAGE_PADDING_ODD } = TESTING_ONLY;
+const { MESSAGE_PADDING_EVEN, MESSAGE_PADDING_ODD } = TEST_ONLY;
 
 describe('Encoder', () => {
   it('instantiates with a payload', () => {

@@ -105,10 +105,7 @@ export class Encoder {
     return 7; // Placeholder for now. For 1L, see Table 9 on page 38.
   }
 
-  private createDataCodewords(
-    data: BitData,
-    errorCorrectionSize: number,
-  ): number[] {
+  private createDataCodewords(data: BitData, errorCorrectionSize: number) {
     const message = Array.from(data.getUint8Array());
     return encodeReedSolomon(message, errorCorrectionSize);
   }
@@ -136,7 +133,7 @@ function minimumVersionForByteEncodingWithLowErrorCorrection(
 }
 
 // Only for testing purposes, to expose constants.
-export const TESTING_ONLY = {
+export const TEST_ONLY = {
   MESSAGE_PADDING_ODD,
   MESSAGE_PADDING_EVEN,
 };
