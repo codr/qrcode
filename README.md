@@ -35,6 +35,7 @@ An example message looks like:
 2. Build it so that it is as small as possible
 3. It in a data-url such that it can fit inside a QR code
    - Version 40 supports 2953 bytes
+     - 2953 - 186 = 2767 bytes after compression
 
 Goal: QR code that when read allows the user to generate another QR code.
 
@@ -87,3 +88,4 @@ Goal: QR code that when read allows the user to generate another QR code.
 - [Veritasium video](https://youtu.be/w5ebcowAJD8)
 - Consider apply gzip to the data-url
 - Test if a mobile phone will open a data URL from a QR code
+- Data URL plan: https://leanrada.com/notes/compressing-websites-into-urls/
