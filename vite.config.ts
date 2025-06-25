@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import { visualizer } from 'rollup-plugin-visualizer';
+import { viteSingleFile } from 'vite-plugin-singlefile';
 
 export default defineConfig(({ mode }) => {
   if (mode === 'nano') {
@@ -8,7 +9,10 @@ export default defineConfig(({ mode }) => {
         outDir: 'dist', // Output directory
         sourcemap: true, // Optional: generate source maps
         rollupOptions: {
-          plugins: [visualizer({ open: true, emitFile: true })], // Visualize bundle after build
+          plugins: [
+            visualizer({ open: true, emitFile: true }), // Visualize bundle after build
+            viteSingleFile(),
+          ],
         },
         modulePreload: {
           polyfill: false,
