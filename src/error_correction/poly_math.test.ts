@@ -9,12 +9,12 @@ describe('polyMath', () => {
     {
       numberOfSymbols: 2,
       expectedExponents: [0, 25, 1],
-      // expected: [1, 3, 2],
+      // expected:       [1, 3, 2],
     },
     {
       numberOfSymbols: 5,
       expectedExponents: [0, 113, 164, 166, 119, 10],
-      // expected: [1, 31, 198, 63, 147, 116],
+      // expected:       [1, 31,  198, 63,  147, 116],
     },
     {
       numberOfSymbols: 6,

@@ -1,7 +1,7 @@
 const GF_SIZE = 256;
 const PRIMITIVE_POLY = 0x11d;
-const EXP_TABLE: number[] = new Array(GF_SIZE * 2);
-const LOG_TABLE: number[] = new Array(GF_SIZE);
+const EXP_TABLE: number[] = [];
+const LOG_TABLE: number[] = [];
 
 export type Polynomial = readonly number[];
 
@@ -23,12 +23,6 @@ function initGaloisTables(): void {
     runningProduct <<= 1;
     if (runningProduct & 0x100) runningProduct ^= PRIMITIVE_POLY;
   }
-
-  // TODO(codr): look at removing this to reduce byte size.
-  // Extend exp table so we don't need modulo
-  for (let i = GF_SIZE - 1; i < EXP_TABLE.length; i++) {
-    EXP_TABLE[i] = EXP_TABLE[i - GF_SIZE + 1];
-  }
 }
 initGaloisTables();
 
@@ -38,7 +32,7 @@ function gfLog(argument: number): number {
 }
 
 function gfExp(base: number): number {
-  return EXP_TABLE[base];
+  return EXP_TABLE[base % 255];
 }
 
 /**
@@ -52,7 +46,7 @@ function gfExp(base: number): number {
  */
 function gfMul(multiplicand: number, multiplier: number): number {
   if (multiplicand === 0 || multiplier === 0) return 0;
-  return EXP_TABLE[LOG_TABLE[multiplicand] + LOG_TABLE[multiplier]];
+  return EXP_TABLE[(LOG_TABLE[multiplicand] + LOG_TABLE[multiplier]) % 255];
 }
 
 /**
@@ -124,7 +118,7 @@ export function polyMod(dividend: Polynomial, divisor: Polynomial): Polynomial {
 export function generateGeneratorPoly(numberOfSymbols: number): Polynomial {
   let generator: Polynomial = [1];
   for (let i = 0; i < numberOfSymbols; i++) {
-    generator = polyMul(generator, [1, EXP_TABLE[i]]);
+    generator = polyMul(generator, [1, EXP_TABLE[i % 255]]);
   }
   return generator;
 }
