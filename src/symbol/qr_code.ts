@@ -40,13 +40,16 @@ export class QRCode {
 
   protected extractVersion(): string {
     const width = this.squares[0].length;
-    if (width !== this.squares.length) {
-      throw new Error(
-        'Invalid QR code squares: QR code must be a square matrix, but was ' +
-          width +
-          'x' +
-          this.squares.length,
-      );
+
+    if (import.meta.env.MODE !== 'nano') {
+      if (width !== this.squares.length) {
+        throw new Error(
+          'Invalid QR code squares: QR code must be a square matrix, but was ' +
+            width +
+            'x' +
+            this.squares.length,
+        );
+      }
     }
 
     const version = (width - 8 * 2 - 1) / 4;
@@ -54,9 +57,13 @@ export class QRCode {
       return `${version}`;
     }
 
-    throw new Error(
-      `Invalid QR code version. QR width is ${width}, with does not match a known size.`,
-    );
+    if (import.meta.env.MODE !== 'nano') {
+      throw new Error(
+        `Invalid QR code version. QR width is ${width}, with does not match a known size.`,
+      );
+    } else {
+      return '';
+    }
   }
 
   // gets encoding of the QR code
@@ -67,21 +74,14 @@ export class QRCode {
   protected extractErrorCorrectionLevel(): ErrorCorrectionLevel {
     const highBit = this.squares[8][0];
     const lowBit = this.squares[8][1];
-    if (highBit === 1 && lowBit === 1) {
-      return ErrorCorrectionLevel.L;
-    }
-    if (highBit === 1 && lowBit === 0) {
-      return ErrorCorrectionLevel.M;
-    }
-    if (highBit === 0 && lowBit === 1) {
-      return ErrorCorrectionLevel.Q;
-    }
-    if (highBit === 0 && lowBit === 0) {
-      return ErrorCorrectionLevel.H;
-    }
-    throw new Error(
-      'Invalid error correction level bits: ' + highBit + ', ' + lowBit,
-    );
+    const maskedTwoBits = ((highBit << 1) | lowBit) as 0 | 1 | 2 | 3;
+    const maskedBitMap: Record<0 | 1 | 2 | 3, ErrorCorrectionLevel> = {
+      0b00: ErrorCorrectionLevel.H, // High
+      0b01: ErrorCorrectionLevel.Q, // Quartile
+      0b10: ErrorCorrectionLevel.M, // Medium
+      0b11: ErrorCorrectionLevel.L, // Low
+    };
+    return maskedBitMap[maskedTwoBits];
   }
 
   getMaskPattern(): number {
@@ -128,7 +128,6 @@ export class QRCode {
       return Encoding.Kanji;
     }
     return Encoding.Unknown;
-    // throw new Error('Invalid encoding bits: ' + encodingBits + '. Expected one of: 0b0001, 0b0010, 0b0100, 0b1000');
   }
 
   toConsole(): string {

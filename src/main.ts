@@ -2,12 +2,17 @@ import './style.css';
 
 import { generateQR } from './generate';
 
-const input = document.querySelector<HTMLInputElement>('#qrText')!;
-const qrDisplay = document.querySelector<HTMLDivElement>('#qrDisplay')!;
+// put `querySelector` in a separate function to reduce bundle size
+const querySelector = <T extends Element>(selector: string): T | null =>
+  document.querySelector<T>(selector);
 
-input.addEventListener('input', () => {
+const input = querySelector<HTMLInputElement>('#i')!;
+const qrDisplay = querySelector<HTMLDivElement>('#d')!;
+
+// `oninput` uses fewer bytes than `addEventListener('input', ...)`
+input.oninput = () => {
   updateQRCodeDisplay(input.value);
-});
+};
 
 function updateQRCodeDisplay(value: string = ''): void {
   const qrCode = generateQR(value);
@@ -17,5 +22,7 @@ function updateQRCodeDisplay(value: string = ''): void {
 
 updateQRCodeDisplay(); // Initial call to display an empty QR code
 
-const searchParams = new URLSearchParams(window.location.search);
-input.value = searchParams.get('q') || '';
+if (import.meta.env.MODE !== 'nano') {
+  const searchParams = new URLSearchParams(window.location.search);
+  input.value = searchParams.get('i') || '';
+}

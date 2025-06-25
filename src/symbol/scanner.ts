@@ -7,14 +7,16 @@ import { getAlignmentPatternPositions } from './alignment_pattern';
  */
 export function scanner(size: number): Generator<[number, number], void, void> {
   const version = Math.floor((size - 17) / 4);
-  if ((size - 1) % 4)
-    throw new Error(
-      `Invalid QR code size: ${size}. Size must be 4n + 1, where n is a positive integer.`,
-    );
-  if (version < 1 || version > 40)
-    throw new Error(
-      `Invalid QR code version: ${version}. Version must be between 1 and 40.`,
-    );
+  if (import.meta.env.MODE !== 'nano') {
+    if ((size - 1) % 4)
+      throw new Error(
+        `Invalid QR code size: ${size}. Size must be 4n + 1, where n is a positive integer.`,
+      );
+    if (version < 1 || version > 40)
+      throw new Error(
+        `Invalid QR code version: ${version}. Version must be between 1 and 40.`,
+      );
+  }
 
   function isAnAlignmentSquare(x: number, y: number): boolean {
     for (const [column, row] of getAlignmentPatternPositions(size)) {
@@ -51,8 +53,10 @@ export function scanner(size: number): Generator<[number, number], void, void> {
     while (x >= 0 && y >= 0) {
       yield [x, y];
       // Check if we are within bounds
-      if (x < 0 || x >= size || y < 0 || y >= size) {
-        throw new RangeError('Cursor out of bounds');
+      if (import.meta.env.MODE !== 'nano') {
+        if (x < 0 || x >= size || y < 0 || y >= size) {
+          throw new RangeError('Cursor out of bounds');
+        }
       }
 
       /**

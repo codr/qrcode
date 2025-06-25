@@ -7,6 +7,7 @@
   "type": "commonjs",
   "scripts": {
     "build": "tsc",
+    "build:prod:nano": "vite build --mode nano",
     "prestart": "npm run build",
     "start": "node --enable-source-maps dist/src/index.js",
     "dev": "tsc --watch",
@@ -19,6 +20,8 @@
     "@vitest/ui": "^3.2.3",
     "happy-dom": "^18.0.1",
     "prettier": "^3.5.3",
+    "rollup-plugin-visualizer": "^6.0.3",
+    "terser": "^5.43.1",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
     "vitest": "^3.2.3"

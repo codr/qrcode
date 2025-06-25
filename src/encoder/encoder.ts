@@ -85,6 +85,7 @@ export class Encoder {
     encoding: Encoding,
     payloadLength: number,
   ): number | string {
+    if (import.meta.env.MODE === 'nano') return 1;
     switch (encoding) {
       case Encoding.Numeric:
         throw new Error('Numeric encoding not yet implemented');
@@ -124,6 +125,8 @@ function minimumVersionForByteEncodingWithLowErrorCorrection(
   if (payloadLength <= 17) return 1;
 
   // TODO(codr): add more error correction levels.
+
+  if (import.meta.env.MODE === 'nano') return -1;
 
   if (payloadLength > 2953)
     throw new Error(

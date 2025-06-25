@@ -5,10 +5,12 @@ export class BitData {
   constructor(private maxBytes: number) {}
 
   appendString(value: string): void {
-    if (this.bitCursor + value.length * 8 > this.maxBytes * 8) {
-      throw new RangeError(
-        'Buffer overflow: not enough space to append string',
-      );
+    if (import.meta.env.MODE !== 'nano') {
+      if (this.bitCursor + value.length * 8 > this.maxBytes * 8) {
+        throw new RangeError(
+          'Buffer overflow: not enough space to append string',
+        );
+      }
     }
 
     for (let i = 0; i < value.length; i++) {
@@ -25,13 +27,15 @@ export class BitData {
    * @returns
    */
   appendUint4(value: number): void {
-    if (value < 0 || value > 15) {
-      throw new RangeError('Value must be between 0 and 15');
-    }
-    if (this.bitCursor + 4 > this.maxBytes * 8) {
-      throw new RangeError(
-        'Buffer overflow: not enough space to append 4 bits',
-      );
+    if (import.meta.env.MODE !== 'nano') {
+      if (value < 0 || value > 15) {
+        throw new RangeError('Value must be between 0 and 15');
+      }
+      if (this.bitCursor + 4 > this.maxBytes * 8) {
+        throw new RangeError(
+          'Buffer overflow: not enough space to append 4 bits',
+        );
+      }
     }
 
     this.data <<= 4n; // Shift existing data left by 4 bits
@@ -40,14 +44,17 @@ export class BitData {
   }
 
   appendUint8(value: number): void {
-    if (value < 0 || value > 255) {
-      throw new RangeError('Value must be between 0 and 255');
+    if (import.meta.env.MODE !== 'nano') {
+      if (value < 0 || value > 255) {
+        throw new RangeError('Value must be between 0 and 255');
+      }
+      if (this.bitCursor + 8 > this.maxBytes * 8) {
+        throw new RangeError(
+          'Buffer overflow: not enough space to append 8 bits',
+        );
+      }
     }
-    if (this.bitCursor + 8 > this.maxBytes * 8) {
-      throw new RangeError(
-        'Buffer overflow: not enough space to append 8 bits',
-      );
-    }
+
     this.data <<= 8n; // Shift existing data left by 8 bits
     this.data |= BigInt(value & 0xff); // Append the new 8-bit value
     this.bitCursor += 8;
@@ -61,8 +68,12 @@ export class BitData {
    * @param data The data to append as a Uint8Array.
    */
   appendUint8Array(data: Uint8Array): void {
-    if (this.bitCursor + data.length * 8 > this.maxBytes * 8) {
-      throw new RangeError('Buffer overflow: not enough space to append data');
+    if (import.meta.env.MODE !== 'nano') {
+      if (this.bitCursor + data.length * 8 > this.maxBytes * 8) {
+        throw new RangeError(
+          'Buffer overflow: not enough space to append data',
+        );
+      }
     }
 
     for (let i = 0; i < data.length; i++) {

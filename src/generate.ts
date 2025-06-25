@@ -49,10 +49,10 @@ function placeInMatrix(message: Uint8Array, version = 1): number[][] {
   for (const byte of message) {
     for (const bit of byte.toString(2).padStart(8, '0')) {
       const position = cursor.next();
-      if (position.done) {
+      if (position.done && import.meta.env.MODE !== 'nano') {
         throw new Error('Message length exceeds QR code capacity');
       }
-      const [x, y] = position.value;
+      const [x, y] = position.value!;
       if (bit === '1') {
         matrix[y][x] = 1; // Set the square to black
       } else {
