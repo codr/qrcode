@@ -52,8 +52,12 @@ Goal: QR code that when read allows the user to generate another QR code.
 
 - [ ] **Measure current bundle size** - Baseline your current implementation size
 - [ ] **Minify and optimize code** - Remove comments, shorten variable names, optimize algorithms
+  - as of 2025/06/25 `npx vite build --mode=nano` shows "5.54 kB │ gzip: 2.49 kB"
+  - Areas for improvement
+    - [ ] bit_data.ts - Can this not use Uint8Array because this is a symbol that cannot easily be minified
+    - [ ] qr_code.ts - Can these be made into function instead of classes? This may minify nicer.
 - [ ] **Remove unnecessary features** - Strip down to only essential QR generation functions
-- [ ] **Optimize Reed-Solomon tables** - Consider pre-computed vs generated tables for size
+- [x] **Optimize Reed-Solomon tables** - Consider pre-computed vs generated tables for size
 - [ ] **Test alternative compression** - Try different approaches to hit the ~3kb target
 
 #### **Phase 3: Self-Containment Testing**
