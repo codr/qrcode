@@ -1,18 +1,4 @@
-export function alignmentPatternCount(size: number): number {
-  if (size < 25) {
-    // version 1 does not have alignment patterns.
-    return 0;
-  }
-  return columnsAndRowsCount(size) * columnsAndRowsCount(size) - 3;
-}
-
-export function columnsAndRowsCount(size: number): number {
-  if (size < 25) {
-    // version 1 does not have alignment patterns.
-    return 1;
-  }
-  return Math.floor((size + 41) / 28);
-}
+import { columnsAndRowsCount } from '../util/alignment';
 
 export function columnsAndRowsPositions(size: number): number[] {
   // Every Version has at least conceptual column and row at 6.
@@ -37,6 +23,9 @@ export function columnsAndRowsPositions(size: number): number[] {
   return result;
 }
 
+/**
+ * Calculates the positions of alignment patterns for a QR code of a given size.
+ */
 export function getAlignmentPatternPositions(size: number): [number, number][] {
   const columnsAndRows = columnsAndRowsPositions(size);
   const positions: [number, number][] = [];
@@ -51,4 +40,24 @@ export function getAlignmentPatternPositions(size: number): [number, number][] {
   }
 
   return positions;
+}
+
+/**
+ * Applies alignment patterns to the QR code matrix.
+ */
+export function applyAlignmentPattern(matrix: number[][], size: number): void {
+  const positions = getAlignmentPatternPositions(size);
+  for (const [x, y] of positions) {
+    for (let row = -2; row <= 2; row++) {
+      for (let col = -2; col <= 2; col++) {
+        if (row === -2 || row === 2 || col === -2 || col === 2) {
+          matrix[y + row][x + col] = 1; // Outer border
+        } else if (row === 0 && col === 0) {
+          matrix[y + row][x + col] = 1; // Center square
+        } else {
+          matrix[y + row][x + col] = 0; // Inner square
+        }
+      }
+    }
+  }
 }
