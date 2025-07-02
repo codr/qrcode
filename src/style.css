@@ -9,9 +9,7 @@ h1 {
 
 pre {
   line-height: 1em;
-  margin: 3em;
-
-  transform-origin: top center;
+  margin: 5em;
   transform: scaleY(1.2);
 }
 
