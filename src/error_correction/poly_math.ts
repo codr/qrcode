@@ -74,7 +74,10 @@ function gfDiv(dividend: number, divisor: number): number {
  * - Returns a new array representing the product polynomial.
  * - No side effects.
  */
-function polyMul(multiplicand: Polynomial, multiplier: Polynomial): Polynomial {
+export function polyMul(
+  multiplicand: Polynomial,
+  multiplier: Polynomial,
+): Polynomial {
   const result = new Array(multiplicand.length + multiplier.length - 1); //.fill(0);
   for (let i = 0; i < multiplicand.length; i++) {
     for (let j = 0; j < multiplier.length; j++) {

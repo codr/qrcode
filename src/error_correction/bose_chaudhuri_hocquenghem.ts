@@ -5,6 +5,8 @@
  * This implementation provides functionality to generate BCH codewords from input data, given the code parameters.
  */
 
+import { polyMod } from './poly_math';
+
 /**
  * Generates a BCH codeword from the given input data and BCH code parameters.
  * This function assumes binary BCH codes (GF(2)).
@@ -22,42 +24,10 @@ export function generateBCHCodeword(
 
   // Step 2: Perform polynomial division (modulo 2) of the message by the generator polynomial
   // The remainder is the parity bits
-  const remainder = polynomialMod2Division(message, generatorPoly);
+  const remainder = polyMod(message, generatorPoly);
 
   // Step 3: Construct the codeword by replacing the last n-k bits of the message with the remainder
   const codeword: number[] = data.concat(remainder);
 
   return codeword;
-}
-
-/**
- * Performs polynomial division over GF(2) (binary field).
- * Returns the remainder after dividing dividend by divisor.
- *
- * @example
- * // Dividing [1,0,1,1,0,0,0] by [1,0,1,1]
- * // Returns [0,1,0]
- */
-export function polynomialMod2Division(
-  dividend: number[],
-  divisor: number[],
-): number[] {
-  // Make a copy of the dividend to avoid mutating the input
-  const remainder = dividend.slice();
-
-  // The degree of the divisor
-  const divisorDegree = divisor.length - 1;
-
-  // Perform division
-  for (let i = 0; i <= remainder.length - divisor.length; i++) {
-    // If the current coefficient is 1, perform XOR with the divisor
-    if (remainder[i] === 1) {
-      for (let j = 0; j < divisor.length; j++) {
-        remainder[i + j] ^= divisor[j];
-      }
-    }
-  }
-
-  // The remainder is the last (divisor.length - 1) coefficients
-  return remainder.slice(-divisorDegree);
 }
