@@ -9,8 +9,8 @@ h1 {
 
 pre {
   line-height: 1em;
-  margin: 5em;
-  transform: scaleY(1.2);
+  margin: 2em;
+  transform: scaleX(.8);
 }
 
 input {
