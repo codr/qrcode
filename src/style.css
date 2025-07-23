@@ -14,5 +14,6 @@ pre {
 }
 
 input {
+  display: block;
   font-size: 1.5em;
 }
