@@ -20,10 +20,9 @@ function updateQRCodeDisplay(value: string = ''): void {
   qrDisplay.innerHTML = qrCode.toConsole();
 }
 
-updateQRCodeDisplay(); // Initial call to display an empty QR code
-
 if (import.meta.env.MODE !== 'nano') {
   const searchParams = new URLSearchParams(window.location.search);
   input.value = searchParams.get('i') || '';
-  updateQRCodeDisplay(input.value);
 }
+
+updateQRCodeDisplay(input.value); // Initial call to display an empty QR code
