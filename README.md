@@ -45,8 +45,10 @@ Goal: QR code that when read allows the user to generate another QR code.
 
 - [x] **Finish Reed-Solomon error correction** - Complete the current implementation you're working on
 - [x] **Test basic QR generation** - Verify codes scan correctly with different data inputs
+- [ ] **Break up larger error correction** - Codes 5-Q and larger are broken up into blocks
 - [ ] **Implement different error correction levels** - L, M, Q, H levels for size vs reliability trade-offs
 - [ ] **Add version support** - Handle different QR code sizes (Version 1-40) as needed
+- [ ] **Add mask validation** - Evaluate and apply the appropriate mask to the code
 
 #### **Phase 2: Optimization & Compression**
 
